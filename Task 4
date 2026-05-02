@@ -1,0 +1,72 @@
+import java.util.*;
+
+public class Main {
+
+    static class Product {
+        int id;
+        String name;
+        String category;
+        double rating;
+
+        Product(int id, String name, String category, double rating) {
+            this.id = id;
+            this.name = name;
+            this.category = category;
+            this.rating = rating;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        List<Product> products = new ArrayList<>();
+        products.add(new Product(1, "Java Programming Book", "books", 4.8));
+        products.add(new Product(2, "Wireless Mouse", "electronics", 4.4));
+        products.add(new Product(3, "Gaming Keyboard", "electronics", 4.6));
+        products.add(new Product(4, "Data Structures Course", "education", 4.9));
+        products.add(new Product(5, "Smartphone Stand", "electronics", 4.2));
+        products.add(new Product(6, "Machine Learning Book", "books", 4.7));
+        products.add(new Product(7, "Online Java Course", "education", 4.8));
+        products.add(new Product(8, "Notebook", "stationery", 4.1));
+        products.add(new Product(9, "Pen Set", "stationery", 4.0));
+        products.add(new Product(10, "Laptop Bag", "accessories", 4.5));
+
+        System.out.println("=== Recommendation System ===");
+        System.out.println("Available categories: books, electronics, education, stationery, accessories");
+        System.out.print("Enter your preferred category: ");
+        String preferredCategory = sc.nextLine().trim().toLowerCase();
+
+        System.out.print("Enter minimum rating you want (e.g. 4.0): ");
+        double minRating = sc.nextDouble();
+
+        List<Product> recommended = recommendProducts(products, preferredCategory, minRating);
+
+        System.out.println("\n=== Recommended Products ===");
+        if (recommended.isEmpty()) {
+            System.out.println("No products found for your preference.");
+        } else {
+            for (Product p : recommended) {
+                System.out.println("Product ID   : " + p.id);
+                System.out.println("Name         : " + p.name);
+                System.out.println("Category     : " + p.category);
+                System.out.println("Rating       : " + p.rating);
+                System.out.println("-----------------------------");
+            }
+        }
+
+        sc.close();
+    }
+
+    public static List<Product> recommendProducts(List<Product> products, String preferredCategory, double minRating) {
+        List<Product> result = new ArrayList<>();
+
+        for (Product p : products) {
+            if (p.category.equalsIgnoreCase(preferredCategory) && p.rating >= minRating) {
+                result.add(p);
+            }
+        }
+
+        result.sort((a, b) -> Double.compare(b.rating, a.rating));
+        return result;
+    }
+}
